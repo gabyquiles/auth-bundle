@@ -1,0 +1,32 @@
+{
+  "name": "gabyquiles/auth-bundle",
+  "version": "1.1",
+  "license": "Apache-2.0",
+  "keywords": [
+    "aws",
+    "cognito",
+    "authentication"
+  ],
+  "minimum-stability": "dev",
+  "description": "Provide the verification for jwt from AWS Cognito",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Gabriel A. Quiles-Perez",
+      "email": "info@gabyquiles.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "GabyQuiles\\Auth\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GabyQuiles\\Auth\\Test\\": "tests/"
+    }
+  }
+}

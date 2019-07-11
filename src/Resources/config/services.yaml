@@ -1,0 +1,16 @@
+services:
+
+#  Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterface:
+  #    alias: gabyquiles.auth.aws_jwt_provider
+
+  #  lexik_jwt_authentication.encoder.lcobucci:
+  #    class: Lexik\Bundle\JWTAuthenticationBundle\Encoder\LcobucciJWTEncoder
+  #    arguments:
+  #      $jwsProvider: '@app.aws_jwt_provider'
+
+  ######
+  gabyquiles.auth.aws_jwt_provider:
+    class: GabyQuiles\Auth\Providers\AwsJwsProvider
+    arguments:
+      $ttl: 3600 # '%lexik_jwt_authentication.token_ttl%'
+      $clockSkew: 0 # '%lexik_jwt_authentication.clock_skew%'
