@@ -3,6 +3,7 @@
 namespace GabyQuiles\Auth\Providers;
 
 
+use GabyQuiles\Auth\Loaders\JwkKeyLoader;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Token;
