@@ -5,6 +5,6 @@ services:
   gaby_quiles_auth_jws.aws_jwt_provider:
     class: GabyQuiles\Auth\Providers\AwsJwsProvider
     arguments:
-      $keyLoader: '@gabyquiles_jwt_auth_extensions.jwk_key_loader'
+      $keyLoader: '@gaby_quiles_auth_jws.jwk_key_loader'
       $ttl: '%gaby_quiles_auth_jws.token_ttl%'
       $clockSkew: '%gaby_quiles_auth_jws.clock_skew%'
