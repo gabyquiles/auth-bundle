@@ -16,7 +16,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('gaby_quiles_auth_jws');
-        $rootNode = \method_exists(TreeBuilder::class, 'getRootNode') ? $treeBuilder->getRootNode() : $treeBuilder->root('gabyquiles_jwt_auth_extensions');
+        $rootNode = \method_exists(TreeBuilder::class, 'getRootNode') ? $treeBuilder->getRootNode() : $treeBuilder->root('gaby_quiles_auth_jws');
         $rootNode
             ->addDefaultsIfNotSet()
             ->children()

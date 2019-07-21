@@ -1,8 +1,8 @@
 services:
-  gabyquiles_jwt_auth_extensions.jwk_key_loader:
+  gaby_quiles_auth_jws.jwk_key_loader:
     class: GabyQuiles\Auth\Loaders\JwkKeyLoader
 
-  gabyquiles_jwt_auth_extensions.aws_jwt_provider:
+  gaby_quiles_auth_jws.aws_jwt_provider:
     class: GabyQuiles\Auth\Providers\AwsJwsProvider
     arguments:
       $keyLoader: '@gabyquiles_jwt_auth_extensions.jwk_key_loader'

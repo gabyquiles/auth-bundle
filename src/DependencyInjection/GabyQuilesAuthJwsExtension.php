@@ -20,9 +20,6 @@ class GabyQuilesAuthJwsExtension extends Extension
         $loader->load('services.yaml');
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
-        $keyLoaderDefinition = $container->getDefinition('gabyquiles_jwt_auth_extensions.jwk_key_loader');
-        $definition = $container->getDefinition('gabyquiles_jwt_auth_extensions.aws_jwt_provider');
-//        $definition->replaceArgument('$keyLoader', $keyLoaderDefinition);
         $container->setParameter('gaby_quiles_auth_jws.token_ttl', $config['token_ttl']);
         $container->setParameter('gaby_quiles_auth_jws.clock_skew', $config['clock_skew']);
     }
