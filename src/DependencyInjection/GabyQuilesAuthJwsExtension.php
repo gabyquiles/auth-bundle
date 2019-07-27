@@ -22,5 +22,7 @@ class GabyQuilesAuthJwsExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
         $container->setParameter('gaby_quiles_auth_jws.token_ttl', $config['token_ttl']);
         $container->setParameter('gaby_quiles_auth_jws.clock_skew', $config['clock_skew']);
+        $container->setParameter('gaby_quiles_auth_jws.pool_id', $config['pool_id']);
+        $container->setParameter('gaby_quiles_auth_jws.region', $config['region']);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace GabyQuiles\Auth\DependencyInjection;
+namespace GabyQuiles\Auth\DependencyInjection\CompilerPasses;
 
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;

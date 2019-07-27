@@ -2,7 +2,7 @@
 
 namespace GabyQuiles\Auth;
 
-use GabyQuiles\Auth\DependencyInjection\ConfigureLcobucciEncoderCompilerPass;
+use GabyQuiles\Auth\DependencyInjection\CompilerPasses\ConfigureLcobucciEncoderCompilerPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
