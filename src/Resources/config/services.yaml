@@ -1,16 +1,16 @@
 services:
-  gaby_quiles_auth_jws:
-    jwk_fetcher:
-      class: GabyQuiles\Auth\Loaders\JwkFetcher
-      
-    jwk_key_loader:
-      class: GabyQuiles\Auth\Loaders\JwkKeyLoader
-      arguments:
-        $cache: '@cache.app'
+  gaby_quiles_auth_jws.jwk_fetcher:
+    class: GabyQuiles\Auth\Loaders\JwkFetcher
 
-    aws_jwt_provider:
-      class: GabyQuiles\Auth\Providers\AwsJwsProvider
-      arguments:
-        $keyLoader: '@gaby_quiles_auth_jws.jwk_key_loader'
-        $ttl: '%gaby_quiles_auth_jws.token_ttl%'
-        $clockSkew: '%gaby_quiles_auth_jws.clock_skew%'
+  gaby_quiles_auth_jws.jwk_key_loader:
+    class: GabyQuiles\Auth\Loaders\JwkKeyLoader
+    arguments:
+      $cache: '@cache.app'
+      $jwkFetcher: '@gaby_quiles_auth_jws.jwk_fetcher'
+
+  gaby_quiles_auth_jws.aws_jwt_provider:
+    class: GabyQuiles\Auth\Providers\AwsJwsProvider
+    arguments:
+      $keyLoader: '@gaby_quiles_auth_jws.jwk_key_loader'
+      $ttl: '%gaby_quiles_auth_jws.token_ttl%'
+      $clockSkew: '%gaby_quiles_auth_jws.clock_skew%'

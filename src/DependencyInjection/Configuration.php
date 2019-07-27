@@ -26,9 +26,9 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('clock_skew')
             ->defaultValue(0)
             ->end()
-            ->scalarNode('cognito_pool_id')
+            ->scalarNode('pool_id')
             ->end()
-            ->scalarNode('aws_region')
+            ->scalarNode('region')
             ->defaultValue('us-east-1')
             ->end()
             ->end();
