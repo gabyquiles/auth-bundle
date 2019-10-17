@@ -3,7 +3,6 @@
 namespace GabyQuiles\Auth\Providers;
 
 
-use GabyQuiles\Auth\Loaders\JwkKeyLoader;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Token;
@@ -12,7 +11,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterfa
 use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\RawKeyLoader;
 use Lexik\Bundle\JWTAuthenticationBundle\Signature\LoadedJWS;
 
-class AwsJwsProvider implements JWSProviderInterface
+class TestProvider implements JWSProviderInterface
 {
 
     /**
@@ -44,20 +43,8 @@ class AwsJwsProvider implements JWSProviderInterface
      *
      * @throws \InvalidArgumentException If the given crypto engine is not supported
      */
-    public function __construct(JwkKeyLoader $keyLoader, $ttl, $clockSkew)
+    public function __construct()
     {
-
-        if (null !== $ttl && !is_numeric($ttl)) {
-            throw new \InvalidArgumentException(sprintf('The TTL should be a numeric value, got %s instead.', $ttl));
-        }
-
-        if (null !== $clockSkew && !is_numeric($clockSkew)) {
-            throw new \InvalidArgumentException(sprintf('The clock skew should be a numeric value, got %s instead.', $clockSkew));
-        }
-
-        $this->keyLoader = $keyLoader;
-        $this->ttl = $ttl;
-        $this->clockSkew = $clockSkew;
     }
 
     /**
