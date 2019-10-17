@@ -2,6 +2,7 @@
 This bundle decode and verifies a AWS JWT to allow users authenticated with AWS Cognito to access your services.
 
 ## Installation
+`composer require gabyquiles/auth-bundle`
 
 ### Configuration
 Add config/gaby_quiles_auth_jws.yaml
