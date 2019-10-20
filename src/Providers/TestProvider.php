@@ -18,8 +18,8 @@ class TestProvider implements JWSProviderInterface
      */
     public function create(array $payload, array $header = [])
     {
-        // TODO: Implement create() method.
-//        Not Need to implement
+        // This is a stub provider used to ease testing. Does not sign any token.
+        throw new \BadMethodCallException('This provider does not sign any request');
     }
 
     /**

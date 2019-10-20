@@ -70,8 +70,8 @@ class AwsJwsProvider implements JWSProviderInterface
      */
     public function create(array $payload, array $header = [])
     {
-        // TODO: Implement create() method.
-//        Not Need to implement
+        // This is provider do not sign any request. JWT is sign by AWS and this provider is used to decode it.
+        throw new \BadMethodCallException('This provider does not sign any request');
     }
 
     /**
