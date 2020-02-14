@@ -16,14 +16,13 @@ class JwkFetcher
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LoggerInterface $logger, $poolId, $region = 'us-east-1')
+    public function __construct($poolId, $region = 'us-east-1', LoggerInterface $logger)
     {
-        $this->url = 'https://cognito-idp.' . $region . '.amazonaws.com/' . $poolId . '/.well-known/jwks.json';
         $this->logger = $logger;
+        $this->url = 'https://cognito-idp.' . $region . '.amazonaws.com/' . $poolId . '/.well-known/jwks.json';
     }
 
-    public
-    function getJwk()
+    public function getJwk()
     {
         $this->logger->debug("Requesting JWK");
         $httpClient = HttpClient::create();

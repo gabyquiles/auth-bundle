@@ -1,6 +1,8 @@
 services:
   gaby_quiles_auth_jws.jwk_fetcher:
     class: GabyQuiles\Auth\Loaders\JwkFetcher
+    arguments:
+      $logger: '@logger'
 
   gaby_quiles_auth_jws.jwk_key_loader:
     class: GabyQuiles\Auth\Loaders\JwkKeyLoader
@@ -8,7 +10,7 @@ services:
       $cache: '@cache.app'
       $jwkFetcher: '@gaby_quiles_auth_jws.jwk_fetcher'
 
-  gaby_quiles_auth_jws.jwt_provider:
+  gaby_quiles_auth_jws.aws_jwt_provider:
     class: GabyQuiles\Auth\Providers\AwsJwsProvider
     arguments:
       $keyLoader: '@gaby_quiles_auth_jws.jwk_key_loader'

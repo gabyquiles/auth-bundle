@@ -1,0 +1,12 @@
+services:
+  gaby_quiles_auth_jws.jwk_fetcher:
+    class: GabyQuiles\Auth\Loaders\JwkFetcher
+
+  gaby_quiles_auth_jws.jwk_key_loader:
+    class: GabyQuiles\Auth\Loaders\JwkKeyLoader
+    arguments:
+      $cache: '@cache.app'
+      $jwkFetcher: '@gaby_quiles_auth_jws.jwk_fetcher'
+
+  gaby_quiles_auth_jws.jwt_provider:
+    class: GabyQuiles\Auth\Providers\TestProvider

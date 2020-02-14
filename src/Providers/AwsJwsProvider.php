@@ -12,6 +12,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterfa
 use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\RawKeyLoader;
 use Lexik\Bundle\JWTAuthenticationBundle\Signature\LoadedJWS;
 
+//TODO: Move to its own bundle
 class AwsJwsProvider implements JWSProviderInterface
 {
 
