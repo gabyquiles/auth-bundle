@@ -4,10 +4,20 @@ namespace GabyQuiles\Auth\Providers;
 
 
 use GabyQuiles\Auth\Loaders\JwkKeyLoader;
+use GabyQuiles\Auth\Signer\SignerFactory;
+use Lcobucci\Clock\SystemClock;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Encoding\MicrosecondBasedDateConversion;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Signer\Hmac;
+use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token;
-use Lcobucci\JWT\ValidationData;
+use Lcobucci\JWT\Token\Parser as JWTParser;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
+use Lcobucci\JWT\Validation\Constraint\ValidAt;
+use Lcobucci\JWT\Validation\Validator;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\RawKeyLoader;
 use Lexik\Bundle\JWTAuthenticationBundle\Signature\LoadedJWS;
@@ -37,6 +47,11 @@ class AwsJwsProvider implements JWSProviderInterface
     private $clockSkew;
 
     /**
+     * @var SignerFactory
+     */
+    private $signerFactory;
+
+    /**
      * @param RawKeyLoader $keyLoader
      * @param string $cryptoEngine
      * @param string $signatureAlgorithm
@@ -45,7 +60,7 @@ class AwsJwsProvider implements JWSProviderInterface
      *
      * @throws \InvalidArgumentException If the given crypto engine is not supported
      */
-    public function __construct(JwkKeyLoader $keyLoader, $ttl, $clockSkew)
+    public function __construct(SignerFactory $factory, JwkKeyLoader $keyLoader, $ttl, $clockSkew)
     {
 
         if (null !== $ttl && !is_numeric($ttl)) {
@@ -59,6 +74,7 @@ class AwsJwsProvider implements JWSProviderInterface
         $this->keyLoader = $keyLoader;
         $this->ttl = $ttl;
         $this->clockSkew = $clockSkew;
+        $this->signerFactory = $factory;
     }
 
     /**
@@ -84,7 +100,11 @@ class AwsJwsProvider implements JWSProviderInterface
      */
     public function load($token)
     {
-        $jws = (new Parser())->parse((string)$token);
+        if (class_exists(JWTParser::class)) {
+            $jws = (new JWTParser(new JoseEncoder()))->parse((string) $token);
+        } else {
+            $jws = (new Parser())->parse((string) $token);
+        }
 
         $payload = [];
         foreach ($jws->getClaims() as $claim) {
@@ -97,37 +117,20 @@ class AwsJwsProvider implements JWSProviderInterface
 
     private function verify(Token $jwt)
     {
-        if (!$jwt->validate(new ValidationData(time() + $this->clockSkew))) {
-            return false;
+        $this->signer = $this->signerFactory->getSignerForAlgorithm($jwt->getHeader('alg'));
+        if (class_exists(InMemory::class)) {
+            $key = InMemory::plainText($this->signer instanceof Hmac ? $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE) : $this->keyLoader->loadKey(RawKeyLoader::TYPE_PUBLIC));
+        } else {
+            $key = new Key($this->signer instanceof Hmac ? $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE) : $this->keyLoader->loadKey(RawKeyLoader::TYPE_PUBLIC));
         }
 
-        $this->signer = $this->getSignerForAlgorithm($jwt->getHeader('alg'));
-        return $jwt->verify($this->signer, $this->keyLoader->loadKey($jwt->getHeader('kid')));
-    }
+        $clock = SystemClock::fromUTC();
+        $validator = new Validator();
 
-
-    private function getSignerForAlgorithm($signatureAlgorithm)
-    {
-        $signerMap = [
-            'HS256' => Signer\Hmac\Sha256::class,
-            'HS384' => Signer\Hmac\Sha384::class,
-            'HS512' => Signer\Hmac\Sha512::class,
-            'RS256' => Signer\Rsa\Sha256::class,
-            'RS384' => Signer\Rsa\Sha384::class,
-            'RS512' => Signer\Rsa\Sha512::class,
-            'EC256' => Signer\Ecdsa\Sha256::class,
-            'EC384' => Signer\Ecdsa\Sha384::class,
-            'EC512' => Signer\Ecdsa\Sha512::class,
-        ];
-
-        if (!isset($signerMap[$signatureAlgorithm])) {
-            throw new \InvalidArgumentException(
-                sprintf('The algorithm "%s" is not supported by %s', $signatureAlgorithm, __CLASS__)
-            );
-        }
-
-        $signerClass = $signerMap[$signatureAlgorithm];
-
-        return new $signerClass();
+        return $validator->validate(
+            $jwt,
+            new ValidAt($clock, new \DateInterval("PT{$this->clockSkew}S")),
+            new SignedWith($this->signer, $key)
+        );
     }
 }
