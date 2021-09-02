@@ -21,7 +21,7 @@
     "symfony/security-bundle": "^3.4|^4.0",
     "lexik/jwt-authentication-bundle": "^2.12",
     "codercat/jwk-to-pem": " 0.0.3",
-    "symfony/http-client": "4.4"
+    "symfony/http-client": "^4.4"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "^3.4|^4.0",
