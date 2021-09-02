@@ -1,13 +1,12 @@
 {
   "name": "gabyquiles/auth-bundle",
-  "version": "1.1",
+  "version": "1.2",
   "license": "Apache-2.0",
   "keywords": [
     "aws",
     "cognito",
     "authentication"
   ],
-  "minimum-stability": "dev",
   "description": "Provide the verification for jwt from AWS Cognito",
   "type": "library",
   "authors": [
@@ -20,9 +19,9 @@
     "php": ">=7.0",
     "symfony/framework-bundle": "^3.4|^4.0",
     "symfony/security-bundle": "^3.4|^4.0",
-    "lexik/jwt-authentication-bundle": "^2.6",
+    "lexik/jwt-authentication-bundle": "^2.12",
     "codercat/jwk-to-pem": " 0.0.3",
-    "symfony/http-client": "4.4.x-dev"
+    "symfony/http-client": "4.4"
   },
   "require-dev": {
     "symfony/phpunit-bridge": "^3.4|^4.0",
@@ -31,7 +30,8 @@
     "symfony/dom-crawler": "^3.4|^4.0",
     "symfony/var-dumper": "^3.4|^4.0",
     "symfony/yaml": "^3.4|^4.0",
-    "friendsofphp/php-cs-fixer": "^1.1|^2.8"
+    "friendsofphp/php-cs-fixer": "^1.1|^2.8",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {
