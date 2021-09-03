@@ -1,0 +1,10 @@
+gaby_quiles_auth_jws:
+  token_ttl: 3600
+  clock_skew: 50
+  pool_id: '<PoolId>'
+  region: '<Region>'
+
+lexik_jwt_authentication:
+  secret_key: private.pem
+  public_key: public.pem
+  pass_phrase: testing

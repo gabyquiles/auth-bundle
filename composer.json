@@ -1,6 +1,6 @@
 {
   "name": "gabyquiles/auth-bundle",
-  "version": "1.2",
+  "version": "1.2.1",
   "license": "Apache-2.0",
   "keywords": [
     "aws",
@@ -16,7 +16,7 @@
     }
   ],
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.2",
     "symfony/framework-bundle": "^3.4|^4.0",
     "symfony/security-bundle": "^3.4|^4.0",
     "lexik/jwt-authentication-bundle": "^2.12",
@@ -31,7 +31,9 @@
     "symfony/var-dumper": "^3.4|^4.0",
     "symfony/yaml": "^3.4|^4.0",
     "friendsofphp/php-cs-fixer": "^1.1|^2.8",
-    "ext-json": "*"
+    "ext-json": "*",
+    "nyholm/symfony-bundle-test": "^1.8",
+    "matthiasnoback/symfony-dependency-injection-test": "^4.2"
   },
   "autoload": {
     "psr-4": {

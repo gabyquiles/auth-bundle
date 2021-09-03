@@ -4,6 +4,9 @@ services:
     arguments:
       $logger: '@logger'
 
+  gaby_quiles_auth_jws.signer_factory:
+    class: GabyQuiles\Auth\Signer\SignerFactory
+
   gaby_quiles_auth_jws.jwk_key_loader:
     class: GabyQuiles\Auth\Loaders\JwkKeyLoader
     arguments:
@@ -13,6 +16,7 @@ services:
   gaby_quiles_auth_jws.aws_jwt_provider:
     class: GabyQuiles\Auth\Providers\AwsJwsProvider
     arguments:
+      $factory: '@gaby_quiles_auth_jws.signer_factory'
       $keyLoader: '@gaby_quiles_auth_jws.jwk_key_loader'
       $ttl: '%gaby_quiles_auth_jws.token_ttl%'
       $clockSkew: '%gaby_quiles_auth_jws.clock_skew%'

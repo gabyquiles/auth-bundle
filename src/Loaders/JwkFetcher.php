@@ -24,11 +24,11 @@ class JwkFetcher
 
     public function getJwk()
     {
-        $this->logger->debug("Requesting JWK");
+        $this->debug("Requesting JWK");
         $httpClient = HttpClient::create();
         $response = $httpClient->request('GET', $this->url);
 
-        $this->logger->debug("Received status code: " . $response->getStatusCode());
+        $this->debug("Received status code: " . $response->getStatusCode());
         $statusCode = $response->getStatusCode();
         if ($statusCode === 200) {
             $this->logger->debug("Got JWK");
@@ -36,7 +36,13 @@ class JwkFetcher
             return json_decode($content, true);
         }
 
-        $this->logger->debug("Error getting JWK");
+        $this->debug("Error getting JWK");
         throw new \RuntimeException();
+    }
+
+    private function debug($message) {
+        if($this->logger) {
+            $this->logger->debug($message);
+        }
     }
 }
