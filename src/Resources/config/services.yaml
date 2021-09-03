@@ -4,6 +4,9 @@ services:
     arguments:
       $logger: '@logger'
 
+  gaby_quiles_auth_jws.converter:
+    class: CoderCat\JWKToPEM\JWKConverter
+
   gaby_quiles_auth_jws.signer_factory:
     class: GabyQuiles\Auth\Signer\SignerFactory
 
@@ -12,6 +15,7 @@ services:
     arguments:
       $cache: '@cache.app'
       $jwkFetcher: '@gaby_quiles_auth_jws.jwk_fetcher'
+      $converter: '@gaby_quiles_auth_jws.converter'
 
   gaby_quiles_auth_jws.aws_jwt_provider:
     class: GabyQuiles\Auth\Providers\AwsJwsProvider

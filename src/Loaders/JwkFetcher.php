@@ -16,7 +16,7 @@ class JwkFetcher
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct($poolId, $region = 'us-east-1', LoggerInterface $logger)
+    public function __construct($poolId, $region = 'us-east-1', LoggerInterface $logger = null)
     {
         $this->logger = $logger;
         $this->url = 'https://cognito-idp.' . $region . '.amazonaws.com/' . $poolId . '/.well-known/jwks.json';
@@ -31,7 +31,7 @@ class JwkFetcher
         $this->debug("Received status code: " . $response->getStatusCode());
         $statusCode = $response->getStatusCode();
         if ($statusCode === 200) {
-            $this->logger->debug("Got JWK");
+            $this->debug("Got JWK");
             $content = $response->getContent();
             return json_decode($content, true);
         }

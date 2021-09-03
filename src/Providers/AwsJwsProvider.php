@@ -10,7 +10,6 @@ use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Encoding\MicrosecondBasedDateConversion;
 use Lcobucci\JWT\Parser;
 use Lcobucci\JWT\Signer;
-use Lcobucci\JWT\Signer\Hmac;
 use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Token;
@@ -117,11 +116,14 @@ class AwsJwsProvider implements JWSProviderInterface
 
     private function verify(Token $jwt)
     {
-        $this->signer = $this->signerFactory->getSignerForAlgorithm($jwt->getHeader('alg'));
+        $headers = $jwt->headers();
+        $alg = $headers->get('alg');
+        $kid = $headers->get('kid');
+        $this->signer = $this->signerFactory->getSignerForAlgorithm($alg);
         if (class_exists(InMemory::class)) {
-            $key = InMemory::plainText($this->signer instanceof Hmac ? $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE) : $this->keyLoader->loadKey(RawKeyLoader::TYPE_PUBLIC));
+            $key = InMemory::plainText($this->keyLoader->loadKey($kid));
         } else {
-            $key = new Key($this->signer instanceof Hmac ? $this->keyLoader->loadKey(RawKeyLoader::TYPE_PRIVATE) : $this->keyLoader->loadKey(RawKeyLoader::TYPE_PUBLIC));
+            $key = new Key($this->keyLoader->loadKey($kid));
         }
 
         $clock = SystemClock::fromUTC();

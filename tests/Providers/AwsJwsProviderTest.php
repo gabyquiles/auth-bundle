@@ -2,11 +2,14 @@
 
 namespace GabyQuiles\Auth\Test\Providers;
 
+use CoderCat\JWKToPEM\JWKConverter;
+use GabyQuiles\Auth\Loaders\JwkFetcher;
 use GabyQuiles\Auth\Loaders\JwkKeyLoader;
 use GabyQuiles\Auth\Providers\AwsJwsProvider;
 use GabyQuiles\Auth\Signer\SignerFactory;
 use Lcobucci\JWT\Signer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class AwsJwsProviderTest extends TestCase
 {
@@ -21,14 +24,22 @@ class AwsJwsProviderTest extends TestCase
         $mockedSignerFactory = $this->createConfiguredMock(SignerFactory::class, [
             'getSignerForAlgorithm' => $mockedSigner
         ]);
+        $cache = new FilesystemAdapter();
+        $cache->clear();
+        $mockedFetcher = $this->createConfiguredMock(JwkFetcher::class, [
+            'getJwk'=>['keys' => [['kid' => 'KIDfromAWS']]]
+        ]);
 
-        $mockedJwkLoader = $this->createMock(JwkKeyLoader::class);
+        $mockedConverter = $this->createConfiguredMock(JWKConverter::class, [
+            'toPEM' => 'ThisIsMySuperSecretSignature'
+        ]);
+        $mockedJwkLoader = new JwkKeyLoader($cache, $mockedFetcher, $mockedConverter);
 
         $this->sut = new AwsJwsProvider($mockedSignerFactory, $mockedJwkLoader, 3601, 100);
     }
 
     private function generateNewToken($issuer = '', $subject='', $issuedAt='', $expiration='', $jwtId='') {
-        $header = '{"kid":"KID from AWS","alg":"RS256"}';
+        $header = '{"kid":"KIDfromAWS","alg":"RS256"}';
         $claims = [
             'sub',
             'iss',
