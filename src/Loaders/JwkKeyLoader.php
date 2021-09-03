@@ -24,9 +24,8 @@ class JwkKeyLoader
     private $jwkFetcher;
 
 
-    public function __construct(CacheInterface $cache, JwkFetcher $jwkFetcher)
+    public function __construct(CacheInterface $cache, JwkFetcher $jwkFetcher, JWKConverter $converter)
     {
-        $converter = new JWKConverter();
         $this->converter = $converter;
         $this->cache = $cache;
         $this->jwkFetcher = $jwkFetcher;
